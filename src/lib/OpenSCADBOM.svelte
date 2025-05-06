@@ -96,11 +96,16 @@ ECHO: "BOM:Frame 38 x 38 mm:length=250"`;
     class="form-control"
     bind:value={src}
     rows="4"
-    placeholder="Paste output from OpenSCAD log..."
+    placeholder="Paste output from OpenSCAD log. Only the last build from the log will be used."
   ></textarea>
-  <button class="btn btn-secondary mt-2 float-end" onclick={insertSample}
-    >Insert sample</button
-  >
+  <div class="d-flex justify-content-end mt-2">
+    <button class="btn btn-info" onclick={insertSample}
+      >Insert sample</button
+    >    
+    <button class="btn btn-secondary ms-2" onclick={() => src = ""}
+      >Clear</button
+    >
+  </div>
 </div>
 
 {#if result.info}

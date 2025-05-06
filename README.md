@@ -1,5 +1,7 @@
 # OpenSCAD BOM Generation tool
 
+https://kgolding.github.io/openscad-bom/
+
 This tool creates a BOM/Cutting list/Order summary for an OpenSCAD design.
 
 1. Add a echo statement in the OpenSCAD code wherever a new item is to be added to the BOM: e.g.

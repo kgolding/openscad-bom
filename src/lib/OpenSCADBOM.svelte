@@ -135,7 +135,6 @@ ECHO: "BOM:Frame 38 x 38 mm:length=250"`;
     </table>
   </div>
   <h3>Summary</h3>
-  <pre>{JSON.stringify(summary)}</pre>
   <div>
     <table class="table">
       <thead>

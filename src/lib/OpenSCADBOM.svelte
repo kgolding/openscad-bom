@@ -6,6 +6,7 @@
   };
 
   type SummaryItem = {
+    [x: string]: any;
     desc: String;
     len: number;
   };
@@ -27,7 +28,8 @@
         bom = []; // Restart BOM
         parsingDesignCount++;
         if (parsingDesignCount > 1) {
-          info = "Multiple builds detected! Clear OpenSCAD log before Select All/Copy";
+          info =
+            "Multiple builds detected! Clear OpenSCAD log before Select All/Copy";
         }
       }
       if (line.startsWith(`ECHO: "BOM:`)) {
@@ -67,18 +69,17 @@
   let summary: SummaryItem[] = $derived(
     result.bom.reduce((acc: SummaryItem[], cur: Item) => {
       if (!cur.len) return acc; // Nothing to add
-      let e = result.bom.find((b) => b.desc == cur.desc);
-      if (e) {
-        let x = acc.find((a) => a.desc == e.desc);
-        if (x) {
-          x.len = x.len + cur.qty * cur.len;
-          return acc;
-        }
+      const x = acc.find((a) => a.desc == cur.desc);
+      if (x) {
+        x.len = x.len + cur.qty * cur.len;
+        x.lens.push(cur.len)
+      } else {
+        acc.push({
+          desc: cur.desc,
+          len: cur.qty * cur.len,
+          lens: [cur.len],
+        });
       }
-      acc.push({
-        desc: cur.desc,
-        len: cur.len,
-      });
       return acc;
     }, []),
   );
@@ -99,10 +100,8 @@ ECHO: "BOM:Frame 38 x 38 mm:length=250"`;
     placeholder="Paste output from OpenSCAD log. Only the last build from the log will be used."
   ></textarea>
   <div class="d-flex justify-content-end mt-2">
-    <button class="btn btn-info" onclick={insertSample}
-      >Insert sample</button
-    >    
-    <button class="btn btn-secondary ms-2" onclick={() => src = ""}
+    <button class="btn btn-info" onclick={insertSample}>Insert sample</button>
+    <button class="btn btn-secondary ms-2" onclick={() => (src = "")}
       >Clear</button
     >
   </div>
@@ -136,6 +135,7 @@ ECHO: "BOM:Frame 38 x 38 mm:length=250"`;
     </table>
   </div>
   <h3>Summary</h3>
+  <pre>{JSON.stringify(summary)}</pre>
   <div>
     <table class="table">
       <thead>
